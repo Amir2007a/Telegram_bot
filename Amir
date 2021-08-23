@@ -1,0 +1,68 @@
+import telebot
+import os
+
+
+@bot.message_handler(commands=["start"])
+def handle_start(message):
+    user_markup = telebot.types.ReplyKeyboardMarkup(True,False)
+    bot.send_message(message.from_user.id, 'Добро пожаловать! Пожалуйста напишите название книги и мы попытаемся найти нужную книгу. Чтобы увидеть список книг которые у нас есть отправьте /list', reply_markup=user_markup)
+
+
+@bot.message_handler(commands=["stop"])
+def handle_stop(message):
+    hide_markup = telebot.types.ReplyKeyboardRemove()
+    bot.send_message(message.from_user.id, 'До свидания!', reply_markup=hide_markup)
+
+
+@bot.message_handler(commands=["list"])
+def handle_stop(message):
+    bot.send_message(message.from_user.id, '1) 1984\n'
+                                           '2) 451 градус по Фаренгейту\n'
+                                           '3) Собачье сердце\n'
+                                           '4) Отцы и дети\n')
+
+
+@bot.message_handler(content_types=["text"])
+def handle_text(message):
+    if message.text.lower() == '1984':
+        directory = 'D:/Book1'
+        all_files_in_directory = os.listdir(directory)
+        print(all_files_in_directory)
+        for files in all_files_in_directory:
+            document = open(directory + '/' + files, 'rb')
+            bot.send_chat_action(message.from_user.id, 'upload_document')
+            bot.send_document(message.from_user.id, document)
+            document.close()
+    elif message.text.lower() == '451 градус по фаренгейту':
+        directory = 'D:/Book2'
+        all_files_in_directory = os.listdir(directory)
+        print(all_files_in_directory)
+        for files in all_files_in_directory:
+            document = open(directory + '/' + files, 'rb')
+            bot.send_chat_action(message.from_user.id, 'upload_document')
+            bot.send_document(message.from_user.id, document)
+            document.close()
+
+    elif message.text.lower() == 'отцы и дети':
+        directory = 'D:/Book3'
+        all_files_in_directory = os.listdir(directory)
+        print(all_files_in_directory)
+        for files in all_files_in_directory:
+            document = open(directory + '/' + files, 'rb')
+            bot.send_chat_action(message.from_user.id, 'upload_document')
+            bot.send_document(message.from_user.id, document)
+            document.close()
+    elif message.text.lower() == 'собачье сердце':
+        directory = 'D:/Book4'
+        all_files_in_directory = os.listdir(directory)
+        print(all_files_in_directory)
+        for files in all_files_in_directory:
+            document = open(directory + '/' + files, 'rb')
+            bot.send_chat_action(message.from_user.id, 'upload_document')
+            bot.send_document(message.from_user.id, document)
+            document.close()
+    else:
+        bot.send_message(message.from_user.id, 'Простите, у нас нету данной книги')
+
+
+bot.polling(none_stop=True, interval=0)
